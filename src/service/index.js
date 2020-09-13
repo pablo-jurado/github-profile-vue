@@ -16,8 +16,8 @@ export async function getUser(user) {
   return null;
 }
 
-function getFollowList() {
-  return localStorage.getItem("users");
+export function getFollowList() {
+  return JSON.parse(localStorage.getItem("users"));
 }
 
 export function isUserFollowed(login) {
@@ -26,27 +26,24 @@ export function isUserFollowed(login) {
 
   if (emptyList) return false;
 
-  const usersArray = JSON.parse(savesUsers);
-  const foundUser = usersArray.find((user) => user.login === login);
+  const foundUser = savesUsers.find((user) => user.login === login);
 
   return Boolean(foundUser);
 }
 
 export function updateFollowList(newUser) {
   const savesUsers = getFollowList();
-  const emptyList = !savesUsers;
 
-  if (emptyList) {
+  if (!savesUsers) {
     localStorage.setItem("users", JSON.stringify([newUser]));
   } else {
-    const usersArray = JSON.parse(savesUsers);
     if (isUserFollowed(newUser.login)) {
-      const filteredUsers = usersArray.filter(
+      const filteredUsers = savesUsers.filter(
         (user) => user.login !== newUser.login
       );
       localStorage.setItem("users", JSON.stringify(filteredUsers));
     } else {
-      localStorage.setItem("users", JSON.stringify([...usersArray, newUser]));
+      localStorage.setItem("users", JSON.stringify([...savesUsers, newUser]));
     }
   }
 }
