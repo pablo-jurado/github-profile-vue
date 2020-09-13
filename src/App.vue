@@ -9,6 +9,7 @@
 
     <UserCard
       v-if="!loading && result"
+      :login="result.login"
       :name="result.name"
       :bio="result.bio"
       :avatar="result.avatar_url"

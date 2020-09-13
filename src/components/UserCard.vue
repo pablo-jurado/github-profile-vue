@@ -1,9 +1,11 @@
 <template>
-  <div class="user">
-    <img v-bind:src="avatar" height="100px" alt="user avatat" />
-    <h2>{{ name }}</h2>
-    <p>{{ bio }}</p>
-    <a v-bind:href="blog" target="_blank">{{ blog }}</a>
+  <div class="user-card">
+    <img v-bind:src="avatar" height="200px" alt="user avatat" />
+    <div class="content">
+      <h2>{{ name }}</h2>
+      <p>{{ bio }}</p>
+      <a v-bind:href="blog" target="_blank">{{ blog }}</a>
+    </div>
   </div>
 </template>
 
@@ -11,6 +13,7 @@
 export default {
   name: "UserCard",
   props: {
+    login: String,
     name: String,
     bio: String,
     avatar: String,
@@ -21,12 +24,33 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.user {
-  margin: 2rem;
+h2,
+p,
+a {
+  margin: 0.5rem;
 }
+
+.user-card {
+  max-width: 800px;
+  border: solid 1px rgb(206, 206, 206);
+  border-radius: 8px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: flex;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 2rem;
+  text-align: left;
+}
+
 img {
   border-radius: 8px;
-  border: solid 1px rgb(206, 206, 206);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
