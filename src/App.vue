@@ -30,6 +30,7 @@ export default {
     return {
       searchValue: "",
       loading: false,
+      notFound: false,
       result: null,
     };
   },
@@ -38,11 +39,19 @@ export default {
       if (!this.searchValue) return;
 
       this.loading = true;
-      const response = await getUser(this.searchValue);
-      this.searchValue = "";
-      this.loading = false;
 
-      if (response) this.result = response;
+      try {
+        const response = await getUser(this.searchValue);
+        if (response) {
+          this.result = response;
+        } else {
+          this.notFound = true;
+        }
+      } catch (error) {
+        this.notFound = true;
+      }
+      this.loading = false;
+      this.searchValue = "";
     },
   },
 };

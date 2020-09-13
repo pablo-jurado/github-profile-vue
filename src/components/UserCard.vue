@@ -6,18 +6,47 @@
       <p>{{ bio }}</p>
       <a v-bind:href="blog" target="_blank">{{ blog }}</a>
     </div>
+    <div class="favorite">
+      <button v-on:click="addToFavorites">
+        {{ isFolllowed ? "Unfollow ★" : "Follow ☆" }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { updateFollowList, isUserFollowed } from "../service";
 export default {
   name: "UserCard",
+
   props: {
     login: String,
     name: String,
     bio: String,
     avatar: String,
     blog: String,
+  },
+  created: function() {
+    this.isFolllowed = isUserFollowed(this.login);
+  },
+  data: function() {
+    return {
+      isFolllowed: null,
+    };
+  },
+  methods: {
+    addToFavorites: function() {
+      const newUser = {
+        login: this.login,
+        name: this.name,
+        bio: this.bio,
+        avatar: this.avatar,
+        blog: this.blog,
+      };
+
+      updateFollowList(newUser);
+      this.isFolllowed = isUserFollowed(this.login);
+    },
   },
 };
 </script>
@@ -43,10 +72,14 @@ a {
 
 .content {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   margin-left: 2rem;
   text-align: left;
+}
+.favorite {
+  align-self: flex-end;
 }
 
 img {
