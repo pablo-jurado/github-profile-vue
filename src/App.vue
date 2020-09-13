@@ -1,19 +1,50 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>GitHub Explorer</h1>
+    <form v-on:submit.prevent="fetchUser">
+      <input type="text" v-model="searchValue" />
+      <input type="submit" value="Search" v-bind:disabled="loading" />
+    </form>
+    <p v-show="loading">Loading...</p>
+
+    <UserCard
+      v-if="!loading && result"
+      :name="result.name"
+      :bio="result.bio"
+      :avatar="result.avatar_url"
+      :blog="result.blog"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import UserCard from "./components/UserCard.vue";
+import { getUser } from "./service";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    UserCard,
+  },
+  data: function() {
+    return {
+      searchValue: "",
+      loading: false,
+      result: null,
+    };
+  },
+  methods: {
+    fetchUser: async function() {
+      if (!this.searchValue) return;
+
+      this.loading = true;
+      const response = await getUser(this.searchValue);
+      this.searchValue = "";
+      this.loading = false;
+
+      if (response) this.result = response;
+    },
+  },
+};
 </script>
 
 <style>
