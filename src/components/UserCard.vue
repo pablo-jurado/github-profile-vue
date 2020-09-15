@@ -7,15 +7,15 @@
       <a v-bind:href="blog" target="_blank">{{ blog }}</a>
     </div>
     <div class="favorite">
-      <button v-on:click="addToFavorites">
-        {{ isFolllowed ? "Unfollow ★" : "Follow ☆" }}
-      </button>
+      <FollowButton :isFolllowed="isFolllowed" v-on:click.native="addToFavorites"></FollowButton>
     </div>
   </div>
 </template>
 
 <script>
 import { updateFollowList, isUserFollowed } from "../service";
+import FollowButton from "./FollowButton.vue";
+
 export default {
   name: "UserCard",
 
@@ -26,16 +26,19 @@ export default {
     avatar: String,
     blog: String,
   },
-  created: function() {
+  created: function () {
     this.isFolllowed = isUserFollowed(this.login);
   },
-  data: function() {
+  components: {
+    FollowButton,
+  },
+  data: function () {
     return {
       isFolllowed: null,
     };
   },
   methods: {
-    addToFavorites: function() {
+    addToFavorites: function () {
       const newUser = {
         login: this.login,
         name: this.name,

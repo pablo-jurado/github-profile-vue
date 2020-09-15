@@ -4,7 +4,11 @@
       <div class="following">
         <label>
           {{ showFollowing ? "Search Users" : "Show Following" }}
-          <input hidden type="checkbox" v-model="showFollowing" />
+          <input
+            hidden
+            type="checkbox"
+            v-model="showFollowing"
+          />
         </label>
       </div>
 
@@ -44,7 +48,7 @@ export default {
     UserCard,
     Following,
   },
-  data: function() {
+  data: function () {
     return {
       showFollowing: false,
       searchValue: "",
@@ -54,7 +58,7 @@ export default {
     };
   },
   methods: {
-    fetchUser: async function() {
+    fetchUser: async function () {
       if (!this.searchValue) return;
 
       this.loading = true;
